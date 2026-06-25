@@ -2,16 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Phone } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const navLinks = [
   { name: 'Inicio', href: '/' },
-  { name: 'Paquetes', href: '/#paquetes' },
-  { name: 'Ambientes', href: '/ambientes' },
   { name: 'Sobre Nosotros', href: '/#sobre-nosotros' },
-  { name: 'Galería', href: '/#galeria' },
+  { name: 'Servicios Exclusivos', href: '/#servicios' },
+  { name: 'Galería de Eventos', href: '/#galeria' },
   { name: 'Testimonios', href: '/#testimonios' },
   { name: 'Contacto', href: '/#contacto' },
 ];
@@ -22,131 +20,126 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      setScrolled(window.scrollY > 40);
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
-  const toggleMenu = () => setIsOpen(!isOpen);
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-white shadow-lg' : 'bg-white/95 backdrop-blur-sm'
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        scrolled
+          ? 'bg-white/95 backdrop-blur-xl shadow-sm border-b border-[#728d69]/10'
+          : 'bg-white/80 backdrop-blur-xl'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-          {/* Logo */}
-          <Link href="/" className="group relative flex items-center">
-            <div className="relative w-24 h-24 md:w-28 md:h-28 transition-transform duration-300 group-hover:scale-110">
-              <div className="absolute inset-0 rounded-full bg-primary/10 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <Image
-                src="/images/logo/girasoles_logo.png"
-                alt="Los Girasoles - Salón de Eventos"
-                fill
-                className="object-contain drop-shadow-md group-hover:drop-shadow-xl transition-all duration-300 relative z-10"
-              />
-            </div>
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex justify-between items-center h-28">
+
+          {/* Marca */}
+          <Link href="/" className="group flex flex-col">
+            <span
+              className="text-3xl md:text-4xl text-[#5b6d55] transition-all duration-300 group-hover:text-[#728d69]"
+              style={{
+                fontFamily: '"Cormorant Garamond", serif',
+                fontStyle: 'italic',
+                lineHeight: 1,
+              }}
+            >
+              Estilo Coghlan
+            </span>
+
+            <div className="w-16 h-[2px] bg-[#728d69] mt-2 mb-1 transition-all duration-300 group-hover:w-24" />
+
+            <span className="text-[11px] uppercase tracking-[0.35em] text-gray-500">
+              Salón de Eventos
+            </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
+          {/* Desktop */}
+          <div className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
-                className="text-gray-700 hover:text-primary transition-colors duration-200 font-medium"
+                className="text-gray-700 hover:text-[#5b6d55] transition-all duration-300 hover:-translate-y-0.5 font-medium tracking-wide"
               >
                 {link.name}
               </Link>
             ))}
-            <a
-              href="tel:941415631"
-              className="flex items-center space-x-2 bg-primary text-white px-6 py-2.5 rounded-full hover:bg-primary-600 transition-colors duration-200 shadow-md hover:shadow-lg"
-            >
-              <Phone className="w-4 h-4" />
-              <span className="font-medium">Llamar Ahora</span>
-            </a>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Botón Mobile */}
           <button
             onClick={toggleMenu}
-            className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
-            aria-label="Toggle menu"
+            className="lg:hidden"
+            aria-label="Abrir menú"
           >
             {isOpen ? (
-              <X className="w-6 h-6 text-gray-700" />
+              <X className="w-7 h-7 text-[#5b6d55]" />
             ) : (
-              <Menu className="w-6 h-6 text-gray-700" />
+              <Menu className="w-7 h-7 text-[#5b6d55]" />
             )}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Menú Mobile */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: '100vh' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="lg:hidden fixed inset-0 top-20 bg-gradient-to-br from-primary-50 via-white to-primary-100 overflow-hidden"
+            initial={{
+              opacity: 0,
+              height: 0,
+            }}
+            animate={{
+              opacity: 1,
+              height: '100vh',
+            }}
+            exit={{
+              opacity: 0,
+              height: 0,
+            }}
+            transition={{
+              duration: 0.3,
+            }}
+            className="lg:hidden bg-white"
           >
-            <motion.div
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.1 }}
-              className="flex flex-col items-center justify-center h-full space-y-8 px-4"
-            >
+            <div className="flex flex-col items-center justify-center h-full gap-8">
               {navLinks.map((link, index) => (
                 <motion.div
                   key={link.name}
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.1 + index * 0.1 }}
+                  initial={{
+                    opacity: 0,
+                    y: 20,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  transition={{
+                    delay: index * 0.08,
+                  }}
                 >
                   <Link
                     href={link.href}
-                    onClick={toggleMenu}
-                    className="text-3xl font-semibold text-gray-800 hover:text-primary transition-colors duration-200"
+                    onClick={() => setIsOpen(false)}
+                    className="text-2xl font-medium text-gray-800 hover:text-[#728d69] transition-colors"
                   >
                     {link.name}
                   </Link>
                 </motion.div>
               ))}
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.6 }}
-                className="pt-8"
-              >
-                <a
-                  href="tel:941415631"
-                  className="flex items-center space-x-3 bg-primary text-white px-10 py-4 rounded-full hover:bg-primary-600 transition-all duration-200 shadow-xl text-lg font-medium"
-                >
-                  <Phone className="w-5 h-5" />
-                  <span>941 415 631</span>
-                </a>
-              </motion.div>
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.7 }}
-              >
-                <a
-                  href="tel:933435588"
-                  className="flex items-center space-x-3 bg-white text-primary px-10 py-4 rounded-full hover:bg-gray-50 transition-all duration-200 shadow-xl text-lg font-medium border-2 border-primary"
-                >
-                  <Phone className="w-5 h-5" />
-                  <span>933 435 588</span>
-                </a>
-              </motion.div>
-            </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

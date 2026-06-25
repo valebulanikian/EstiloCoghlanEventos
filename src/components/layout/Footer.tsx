@@ -1,162 +1,188 @@
 import Link from 'next/link';
-import Image from 'next/image';
-import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+  Instagram,
+  MessageCircle,
+} from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
-          {/* Company Info */}
-          <div className="space-y-5">
-            <Link href="/" className="group inline-block">
-              <div className="relative w-28 h-28 md:w-36 md:h-36 transition-transform duration-300 group-hover:scale-105">
-                <div className="absolute inset-0 rounded-full bg-yellow-400/15 blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <Image
-                  src="/images/logo/girasoles_logo.png"
-                  alt="Los Girasoles - Salón de Eventos"
-                  fill
-                  className="object-contain drop-shadow-[0_2px_8px_rgba(250,204,21,0.25)] group-hover:drop-shadow-[0_4px_16px_rgba(250,204,21,0.4)] transition-all duration-300 relative z-10"
-                />
-              </div>
-            </Link>
-            <p className="text-gray-300 text-sm leading-relaxed">
-              Innovando para sorprenderte en cada celebración. Tu quinceañera merece lo mejor.
+    <footer className="bg-[#728d69] text-white">
+      <div className="max-w-7xl mx-auto px-6 py-14">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+
+          {/* Descripción */}
+          <div>
+            <h3 className="text-2xl font-semibold mb-4">
+              Estilo Coghlan
+            </h3>
+
+            <p className="text-white/80 leading-relaxed text-sm">
+              Estilo Coghlan es un salón de eventos en Buenos Aires con más de
+              1200 m² de jardín, espacios exclusivos y más de 30 años de
+              experiencia creando celebraciones inolvidables.
             </p>
           </div>
 
-          {/* Quick Links */}
+          {/* Navegación */}
           <div>
-            <h4 className="text-lg font-semibold mb-4 text-yellow-400">Enlaces Rápidos</h4>
-            <ul className="space-y-3">
+            <h4 className="text-lg font-semibold mb-4">
+              Navegación
+            </h4>
+
+            <ul className="space-y-3 text-white/80">
               <li>
-                <Link href="/" className="text-gray-300 hover:text-yellow-400 transition-colors duration-200 text-sm">
+                <Link
+                  href="/"
+                  className="hover:text-white transition-colors"
+                >
                   Inicio
                 </Link>
               </li>
+
               <li>
-                <Link href="#paquetes" className="text-gray-300 hover:text-yellow-400 transition-colors duration-200 text-sm">
-                  Paquetes
-                </Link>
-              </li>
-              <li>
-                <Link href="#sobre-nosotros" className="text-gray-300 hover:text-yellow-400 transition-colors duration-200 text-sm">
+                <Link
+                  href="#sobre-nosotros"
+                  className="hover:text-white transition-colors"
+                >
                   Sobre Nosotros
                 </Link>
               </li>
+
               <li>
-                <Link href="#galeria" className="text-gray-300 hover:text-yellow-400 transition-colors duration-200 text-sm">
-                  Galería
+                <Link
+                  href="#servicios"
+                  className="hover:text-white transition-colors"
+                >
+                  Servicios Exclusivos
                 </Link>
               </li>
+
               <li>
-                <Link href="#contacto" className="text-gray-300 hover:text-yellow-400 transition-colors duration-200 text-sm">
+                <Link
+                  href="#galeria"
+                  className="hover:text-white transition-colors"
+                >
+                  Galería de Eventos
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  href="#testimonios"
+                  className="hover:text-white transition-colors"
+                >
+                  Testimonios
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  href="#contacto"
+                  className="hover:text-white transition-colors"
+                >
                   Contacto
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Contact Info */}
+          {/* Contacto */}
           <div>
-            <h4 className="text-lg font-semibold mb-4 text-yellow-400">Contacto</h4>
-            <ul className="space-y-3">
-              <li className="flex items-start space-x-3">
-                <MapPin className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-300 text-sm">
-                  Calle Lircay N° 200 – 1 Urb. San Martín de Socabaya Coscollo
+            <h4 className="text-lg font-semibold mb-4">
+              Contacto
+            </h4>
+
+            <ul className="space-y-4">
+
+              <li className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                <span className="text-white/80 text-sm">
+                  Dr. Pedro Ignacio Rivera 3804
+                  <br />
+                  Coghlan, CABA
                 </span>
               </li>
-              <li className="flex items-center space-x-3">
-                <Phone className="w-5 h-5 text-yellow-400 flex-shrink-0" />
-                <div className="flex flex-col space-y-1">
-                  <a href="tel:941415631" className="text-gray-300 hover:text-yellow-400 transition-colors duration-200 text-sm">
-                    941 415 631
-                  </a>
-                  <a href="tel:933435588" className="text-gray-300 hover:text-yellow-400 transition-colors duration-200 text-sm">
-                    933 435 588
-                  </a>
-                </div>
+
+              <li className="flex items-center gap-3">
+                <Phone className="w-5 h-5 flex-shrink-0" />
+
+                <a
+                  href="tel:+541128079523"
+                  className="text-white/80 hover:text-white transition-colors text-sm"
+                >
+                  11 2807-9523
+                </a>
               </li>
-              <li className="flex items-center space-x-3">
-                <Mail className="w-5 h-5 text-yellow-400 flex-shrink-0" />
-                <a href="mailto:info@losgirasoles.com" className="text-gray-300 hover:text-yellow-400 transition-colors duration-200 text-sm">
-                  info@losgirasoles.com
+
+              <li className="flex items-center gap-3">
+                <Mail className="w-5 h-5 flex-shrink-0" />
+
+                <a
+                  href="mailto:estilocoghlan.eventos@gmail.com"
+                  className="text-white/80 hover:text-white transition-colors text-sm break-all"
+                >
+                  estilocoghlan.eventos@gmail.com
                 </a>
               </li>
             </ul>
           </div>
 
-          {/* Business Hours */}
+          {/* Horarios y Redes */}
           <div>
-            <h4 className="text-lg font-semibold mb-4 text-yellow-400">Horario de Atención</h4>
-            <ul className="space-y-3">
-              <li className="flex items-start space-x-3">
-                <Clock className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
-                <div className="text-sm">
-                  <p className="text-gray-300 font-medium">Lunes - Domingo</p>
-                  <p className="text-gray-400">9:00 AM - 9:00 PM</p>
-                </div>
-              </li>
-            </ul>
-            <div className="mt-6">
-              <p className="text-sm text-gray-400 mb-3">Síguenos en redes sociales</p>
-              <div className="flex space-x-4">
-                <a
-                  href="https://www.facebook.com/moises.huahuasoncco"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors duration-200"
-                  aria-label="Facebook"
-                >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                  </svg>
-                </a>
-                <a
-                  href="https://www.tiktok.com/@losgirasoles.xv"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-yellow-600 transition-colors duration-200"
-                  aria-label="Tiktok"
-                >
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12.94,1.61V15.78a2.83,2.83,0,0,1-2.83,2.83h0a2.83,2.83,0,0,1-2.83-2.83h0a2.84,2.84,0,0,1,2.83-2.84h0V9.17h0A6.61,6.61,0,0,0,3.5,15.78h0a6.61,6.61,0,0,0,6.61,6.61h0a6.61,6.61,0,0,0,6.61-6.61V9.17l.2.1a8.08,8.08,0,0,0,3.58.84h0V6.33l-.11,0a4.84,4.84,0,0,1-3.67-4.7H12.94Z"/>
-                  </svg>
-                </a>
+            <h4 className="text-lg font-semibold mb-4">
+              Atención
+            </h4>
+
+            <div className="flex items-start gap-3 mb-6">
+              <Clock className="w-5 h-5 mt-0.5 flex-shrink-0" />
+
+              <div className="text-sm">
+                <p className="text-white">
+                  Lunes a Sábado
+                </p>
+
+                <p className="text-white/80">
+                  18:00 a 22:00 hs
+                </p>
+
+                <p className="text-white/60 text-xs mt-1">
+                  Con cita previa
+                </p>
               </div>
+            </div>
+
+            <div className="flex gap-4">
+
+              <a
+                href="https://instagram.com/estilocoghlan"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-11 h-11 rounded-full bg-white/15 hover:bg-white/25 transition-all flex items-center justify-center"
+              >
+                <Instagram className="w-5 h-5" />
+              </a>
+
+              <a
+                href="https://wa.me/541128079523"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-11 h-11 rounded-full bg-white/15 hover:bg-white/25 transition-all flex items-center justify-center"
+              >
+                <MessageCircle className="w-5 h-5" />
+              </a>
+
             </div>
           </div>
         </div>
 
-        {/* Terms and Conditions */}
-        <div className="mt-12 pt-8 border-t border-gray-700">
-          <div className="bg-gray-800/50 rounded-lg p-4 mb-6">
-            <h5 className="text-sm font-semibold text-yellow-400 mb-2">Términos y Condiciones</h5>
-            <p className="text-xs text-gray-400 leading-relaxed">
-              Cualquier cambio de fecha luego de la fecha indicada en el contrato debe hacerse con 2 meses de
-              anticipación de acuerdo a las fechas disponibles en el salón. La devolución de algún adelanto
-              luego del contrato será solo del 50%.
-            </p>
-          </div>
-
-          {/* Copyright */}
-          <div className="text-center space-y-2">
-            <p className="text-sm text-gray-400">
-              © {new Date().getFullYear()} Los Girasoles - Salón de Eventos. Todos los derechos reservados.
-            </p>
-            <p className="text-xs text-gray-500">
-              Desarrollado por{' '}
-              <a
-                href="https://www.miempresa360.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-yellow-400 hover:text-yellow-300 transition-colors duration-200 font-medium"
-              >
-                Mi Empresa 360
-              </a>
-            </p>
-          </div>
+        <div className="border-t border-white/20 mt-10 pt-6 text-center">
+          <p className="text-sm text-white/70">
+            © {new Date().getFullYear()} Valeria Bulanikian. Todos los derechos reservados.
+          </p>
         </div>
       </div>
     </footer>

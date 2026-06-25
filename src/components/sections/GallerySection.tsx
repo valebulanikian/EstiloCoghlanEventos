@@ -1,75 +1,81 @@
 'use client';
 
-import {useState, useEffect, useCallback, useRef} from 'react';
-import {motion, AnimatePresence} from 'framer-motion';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import {ChevronLeft, ChevronRight, X} from 'lucide-react';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import gsap from 'gsap';
-import {ScrollTrigger} from 'gsap/ScrollTrigger';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const galleryImages = [
   {
-    src: '/images/galeria/galeria_01.jpg',
-    title: 'Quinceañera Elegante',
-    category: 'Fiesta Juvenil',
+    src: '/galeria_01.jpg',
+    title: 'Ceremonias al aire libre',
+    category: 'Jardín & Civil',
   },
   {
-    src: '/images/galeria/galeria_02.jpg',
-    title: 'Decorativo',
-    category: 'Evento Formal',
+    src: '/galeria_02.jpg',
+    title: 'Recepciones elegantes',
+    category: 'Celebraciones',
   },
   {
-    src: '/images/galeria/galeria_03.jpg',
-    title: 'Recuerdos',
-    category: 'Fiesta Juvenil',
+    src: '/galeria_03.jpg',
+    title: 'Detalles que hacen la diferencia',
+    category: 'Ambientación',
   },
   {
-    src: '/images/galeria/galeria_04.jpg',
-    title: 'Mesa Elegante',
-    category: 'Evento Formal',
+    src: '/galeria_04.jpg',
+    title: 'Mesas y espacios únicos',
+    category: 'Salón',
   },
   {
-    src: '/images/galeria/galeria_05.jpg',
-    title: 'Recuerdos',
-    category: 'Fiesta Juvenil',
+    src: '/galeria_05.jpg',
+    title: 'Noches inolvidables',
+    category: 'Fiesta',
   },
   {
-    src: '/images/galeria/galeria_06.jpg',
-    title: 'Recuerdos',
-    category: 'Fiesta Juvenil',
+    src: '/galeria_06.jpg',
+    title: 'Momentos para recordar',
+    category: 'Casamientos',
   },
   {
-    src: '/images/galeria/galeria_07.jpg',
-    title: 'Recuerdos',
-    category: 'Fiesta Juvenil',
+    src: '/galeria_07.jpg',
+    title: 'Celebraciones con estilo',
+    category: 'Eventos',
   },
   {
-    src: '/images/galeria/galeria_08.jpg',
-    title: 'Recuerdos',
-    category: 'Fiesta Juvenil',
+    src: '/galeria_08.jpg',
+    title: 'Un oasis en la ciudad',
+    category: 'Estilo Coghlan',
+  },
+  {
+    src: '/galeria_09.jpg',
+    title: 'El jardín de tus sueños',
+    category: 'Exterior',
+  },
+  {
+    src: '/galeria_10.jpg',
+    title: 'Cada rincón cuenta una historia',
+    category: 'Experiencias',
   },
 ];
 
 const TOTAL = galleryImages.length;
-const VISIBLE_CARDS = 5; // 2 on each side + active
+const VISIBLE_CARDS = 5;
 const HALF = Math.floor(VISIBLE_CARDS / 2);
 
-// Wrap index modularly
 function wrapIndex(i: number, total: number): number {
   return ((i % total) + total) % total;
 }
 
-// Compute card 3D properties based on offset from active
 function getCardStyle(offset: number, isMobile: boolean) {
   const absOffset = Math.abs(offset);
 
-  // Base dimensions
   const cardW = isMobile ? 240 : 400;
   const cardH = isMobile ? 180 : 300;
 
-  // Spacing & depth scale down on mobile
   const xSpacing = isMobile ? 160 : 280;
   const zBase = isMobile ? 150 : 250;
   const rotateBase = isMobile ? 40 : 45;
@@ -95,7 +101,7 @@ function getCardStyle(offset: number, isMobile: boolean) {
   const opacity = Math.max(1 - absOffset * 0.3, 0);
   const zIndex = 10 - absOffset;
 
-  return {x, z, rotateY, scale, opacity, zIndex, cardW, cardH};
+  return { x, z, rotateY, scale, opacity, zIndex, cardW, cardH };
 }
 
 export default function GallerySection() {
@@ -111,7 +117,6 @@ export default function GallerySection() {
   const touchDeltaX = useRef(0);
   const isAnimating = useRef(false);
 
-  // Check mobile on mount + resize
   useEffect(() => {
     const check = () => {
       isMobileRef.current = window.innerWidth < 768;
@@ -121,7 +126,6 @@ export default function GallerySection() {
     return () => window.removeEventListener('resize', check);
   }, []);
 
-  // Position all cards based on activeIndex
   const layoutCards = useCallback(
     (animate = true) => {
       if (isAnimating.current && animate) return;
@@ -129,7 +133,6 @@ export default function GallerySection() {
       cardsRef.current.forEach((card, i) => {
         if (!card) return;
 
-        // Compute shortest circular offset from activeIndex
         let offset = i - activeIndex;
         if (offset > TOTAL / 2) offset -= TOTAL;
         if (offset < -TOTAL / 2) offset += TOTAL;
@@ -176,18 +179,14 @@ export default function GallerySection() {
     [activeIndex]
   );
 
-  // Layout on activeIndex change
   useEffect(() => {
     layoutCards(true);
   }, [layoutCards]);
 
-  // Initial layout without animation
   useEffect(() => {
     layoutCards(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [layoutCards]);
 
-  // GSAP entrance animation
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from('.gallery-title', {
@@ -202,7 +201,6 @@ export default function GallerySection() {
         },
       });
 
-      // Cards fly up from below with stagger
       cardsRef.current.forEach((card, i) => {
         if (!card) return;
         gsap.from(card, {
@@ -224,7 +222,6 @@ export default function GallerySection() {
     return () => ctx.revert();
   }, []);
 
-  // Auto-play: advance every 4 seconds, pause on lightbox or user interaction
   const autoplayTimer = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const resetAutoplay = useCallback(() => {
@@ -245,19 +242,22 @@ export default function GallerySection() {
     };
   }, [isLightboxOpen, resetAutoplay]);
 
-  // Navigate to next/prev (circular)
-  const goTo = useCallback((direction: number) => {
-    setActiveIndex((prev) => wrapIndex(prev + direction, TOTAL));
-    resetAutoplay();
-  }, [resetAutoplay]);
+  const goTo = useCallback(
+    (direction: number) => {
+      setActiveIndex((prev) => wrapIndex(prev + direction, TOTAL));
+      resetAutoplay();
+    },
+    [resetAutoplay]
+  );
 
-  // Navigate directly to an index
-  const goToIndex = useCallback((index: number) => {
-    setActiveIndex(wrapIndex(index, TOTAL));
-    resetAutoplay();
-  }, [resetAutoplay]);
+  const goToIndex = useCallback(
+    (index: number) => {
+      setActiveIndex(wrapIndex(index, TOTAL));
+      resetAutoplay();
+    },
+    [resetAutoplay]
+  );
 
-  // Touch/swipe handling
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
     touchDeltaX.current = 0;
@@ -274,7 +274,6 @@ export default function GallerySection() {
     touchDeltaX.current = 0;
   }, [goTo]);
 
-  // Mouse drag handling for desktop
   const mouseStartX = useRef(0);
   const mouseDragging = useRef(false);
   const mouseDelta = useRef(0);
@@ -299,13 +298,12 @@ export default function GallerySection() {
     mouseDelta.current = 0;
   }, [goTo]);
 
-  // Keyboard navigation (when section is focused or hovered)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (isLightboxOpen) return;
       const section = sectionRef.current;
       if (!section) return;
-      // Only respond if section is in viewport
+
       const rect = section.getBoundingClientRect();
       const inView = rect.top < window.innerHeight && rect.bottom > 0;
       if (!inView) return;
@@ -318,29 +316,25 @@ export default function GallerySection() {
         goTo(1);
       }
     };
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [goTo, isLightboxOpen]);
 
-  // Card click handler
   const handleCardClick = useCallback(
     (index: number) => {
-      // If dragged, ignore
       if (Math.abs(mouseDelta.current) > 10) return;
 
       if (index === activeIndex) {
-        // Active card -> open lightbox
         setCurrentIndex(index);
         setIsLightboxOpen(true);
       } else {
-        // Lateral card -> navigate to it
         goToIndex(index);
       }
     },
     [activeIndex, goToIndex]
   );
 
-  // Lightbox navigation
   const closeLightbox = () => setIsLightboxOpen(false);
 
   const goToNext = useCallback(() => {
@@ -370,41 +364,48 @@ export default function GallerySection() {
     <section
       ref={sectionRef}
       id="galeria"
-      className="py-16 md:py-24 bg-gradient-to-b from-neutral-50 to-white overflow-hidden"
+      className="py-16 md:py-24 bg-gradient-to-b from-[#f8f6f1] via-white to-[#f8f6f1] overflow-hidden"
     >
       {/* Header */}
       <div className="gallery-title text-center mb-10 md:mb-16 px-4">
+        <p className="uppercase tracking-[0.3em] text-[#8b7355] text-sm mb-4">
+          Estilo Coghlan
+        </p>
+
         <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-          Galería de Eventos
+          Nuestra Galería
         </h2>
-        <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-          Momentos inolvidables capturados en Los Girasoles
+
+        <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          Un recorrido por celebraciones, ceremonias y momentos inolvidables en
+          nuestro salón y jardín, en el corazón de Coghlan.
         </p>
       </div>
 
       {/* 3D Coverflow Carousel */}
       <div className="relative">
-        {/* Navigation arrows (desktop) */}
+        {/* Navigation arrows */}
         <button
           onClick={() => goTo(-1)}
-          className="hidden md:flex absolute left-4 lg:left-12 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/90 shadow-lg hover:shadow-xl hover:bg-white transition-all"
+          className="hidden md:flex absolute left-4 lg:left-12 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/90 shadow-lg hover:shadow-xl hover:bg-white transition-all border border-[#d8d0c2]"
           aria-label="Anterior"
         >
-          <ChevronLeft className="w-6 h-6 text-gray-700" />
+          <ChevronLeft className="w-6 h-6 text-[#728d69]" />
         </button>
+
         <button
           onClick={() => goTo(1)}
-          className="hidden md:flex absolute right-4 lg:right-12 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/90 shadow-lg hover:shadow-xl hover:bg-white transition-all"
+          className="hidden md:flex absolute right-4 lg:right-12 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/90 shadow-lg hover:shadow-xl hover:bg-white transition-all border border-[#d8d0c2]"
           aria-label="Siguiente"
         >
-          <ChevronRight className="w-6 h-6 text-gray-700" />
+          <ChevronRight className="w-6 h-6 text-[#728d69]" />
         </button>
 
         {/* Carousel container */}
         <div
           ref={carouselRef}
           className="relative mx-auto h-[280px] md:h-[420px] select-none cursor-grab active:cursor-grabbing"
-          style={{perspective: '1000px'}}
+          style={{ perspective: '1000px' }}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
@@ -413,7 +414,6 @@ export default function GallerySection() {
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}
         >
-          {/* Cards */}
           {galleryImages.map((image, index) => (
             <div
               key={index}
@@ -430,9 +430,9 @@ export default function GallerySection() {
               }}
             >
               <div
-                className={`relative w-full h-full rounded-lg overflow-hidden shadow-2xl transition-shadow duration-300 ${
+                className={`relative w-full h-full rounded-[24px] overflow-hidden shadow-2xl transition-shadow duration-300 ${
                   index === activeIndex
-                    ? 'ring-2 ring-primary-400/50 shadow-primary-500/20'
+                    ? 'ring-2 ring-[#728d69]/40 shadow-[0_20px_60px_rgba(114,141,105,0.18)]'
                     : ''
                 }`}
               >
@@ -443,22 +443,22 @@ export default function GallerySection() {
                   className="object-cover"
                   sizes="(max-width: 768px) 240px, 400px"
                 />
-                {/* Overlay with info on active card */}
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+
                 <div
-                  className={`absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent transition-opacity duration-300 ${
-                    index === activeIndex ? 'opacity-100' : 'opacity-0'
+                  className={`absolute bottom-0 left-0 right-0 p-4 md:p-5 transition-opacity duration-300 ${
+                    index === activeIndex ? 'opacity-100' : 'opacity-70'
                   }`}
                 >
-                  <div className="absolute bottom-0 left-0 right-0 p-3 md:p-4">
-                    <p className="text-white text-sm md:text-base font-semibold">
-                      {image.title}
-                    </p>
-                    <p className="text-white/70 text-xs md:text-sm">
-                      {image.category}
-                    </p>
-                  </div>
+                  <p className="text-white text-base md:text-lg font-semibold">
+                    {image.title}
+                  </p>
+                  <p className="text-white/80 text-xs md:text-sm tracking-wide mt-1">
+                    {image.category}
+                  </p>
                 </div>
-                {/* Reflection/shine effect on active */}
+
                 {index === activeIndex && (
                   <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
                 )}
@@ -468,7 +468,7 @@ export default function GallerySection() {
         </div>
       </div>
 
-      {/* Dot indicators */}
+      {/* Dots */}
       <div className="flex justify-center gap-2 mt-6">
         {galleryImages.map((_, i) => (
           <button
@@ -477,31 +477,30 @@ export default function GallerySection() {
             aria-label={`Ir a foto ${i + 1}`}
             className={`rounded-full transition-all duration-300 ${
               i === activeIndex
-                ? 'w-8 h-2.5 bg-primary-500'
-                : 'w-2.5 h-2.5 bg-gray-300 hover:bg-gray-400'
+                ? 'w-8 h-2.5 bg-[#728d69]'
+                : 'w-2.5 h-2.5 bg-[#d8d0c2] hover:bg-[#bfb4a3]'
             }`}
           />
         ))}
       </div>
 
-      {/* Swipe hint for mobile */}
       <p className="text-center text-gray-400 text-xs mt-4 md:hidden">
-        Desliza para ver más fotos
+        Deslizá para ver más fotos
       </p>
 
-      {/* Lightbox Modal */}
+      {/* Lightbox */}
       <AnimatePresence>
         {isLightboxOpen && (
           <motion.div
-            initial={{opacity: 0}}
-            animate={{opacity: 1}}
-            exit={{opacity: 0}}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
             onClick={closeLightbox}
           >
             <button
               onClick={closeLightbox}
-              className="absolute top-4 right-4 z-50 text-white hover:text-primary transition-colors p-2"
+              className="absolute top-4 right-4 z-50 text-white hover:text-[#d6c3a1] transition-colors p-2"
               aria-label="Cerrar"
             >
               <X className="w-8 h-8" />
@@ -512,7 +511,7 @@ export default function GallerySection() {
                 e.stopPropagation();
                 goToPrevious();
               }}
-              className="absolute left-4 z-50 text-white hover:text-primary transition-colors p-2 bg-black/50 rounded-full hover:bg-black/70"
+              className="absolute left-4 z-50 text-white hover:text-[#d6c3a1] transition-colors p-2 bg-black/50 rounded-full hover:bg-black/70"
               aria-label="Anterior"
             >
               <ChevronLeft className="w-10 h-10" />
@@ -523,7 +522,7 @@ export default function GallerySection() {
                 e.stopPropagation();
                 goToNext();
               }}
-              className="absolute right-4 z-50 text-white hover:text-primary transition-colors p-2 bg-black/50 rounded-full hover:bg-black/70"
+              className="absolute right-4 z-50 text-white hover:text-[#d6c3a1] transition-colors p-2 bg-black/50 rounded-full hover:bg-black/70"
               aria-label="Siguiente"
             >
               <ChevronRight className="w-10 h-10" />
@@ -535,10 +534,10 @@ export default function GallerySection() {
             >
               <motion.div
                 key={currentIndex}
-                initial={{opacity: 0, scale: 0.8}}
-                animate={{opacity: 1, scale: 1}}
-                exit={{opacity: 0, scale: 0.8}}
-                transition={{duration: 0.3}}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.3 }}
                 className="relative w-full h-full max-w-6xl max-h-[90vh]"
               >
                 <Image
@@ -555,11 +554,11 @@ export default function GallerySection() {
             <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center z-50">
               <motion.div
                 key={currentIndex}
-                initial={{opacity: 0, y: 20}}
-                animate={{opacity: 1, y: 0}}
-                className="bg-black/70 backdrop-blur-sm px-6 py-3 rounded-lg"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-black/70 backdrop-blur-sm px-6 py-3 rounded-2xl border border-white/10"
               >
-                <span className="text-accent text-sm font-medium block mb-1">
+                <span className="text-[#d6c3a1] text-sm font-medium block mb-1">
                   {galleryImages[currentIndex].category}
                 </span>
                 <p className="text-white text-lg font-semibold">

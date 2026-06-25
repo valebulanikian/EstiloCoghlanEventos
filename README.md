@@ -188,7 +188,4 @@ Para soporte técnico o consultas sobre la página:
 - Revisar la documentación de Next.js: [https://nextjs.org/docs](https://nextjs.org/docs)
 
 ---
-
-**Desarrollado con ❤️ para Los Girasoles - Salón de Eventos**
-
-*Innovando para sorprenderte*
+}

@@ -13,9 +13,20 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Los Girasoles - Salón de Eventos para todo tipo de reuniones inolvidables | Arequipa",
-  description: "Salón de eventos en Arequipa con tres ambientes, capacidad hasta 170 personas y paquetes personalizables. Ideal para matrimonios, promociones, quinceaños y eventos sociales. Ubicados en Socabaya, Arequipa.",
-  keywords: ["salón de eventos", "quinceañera", "Arequipa", "eventos", "fiestas", "Los Girasoles", "Socabaya"],
+  title: "Estilo Coghlan | Salón de Eventos en Coghlan, CABA",
+  description:
+    "Estilo Coghlan es un salón de eventos en el barrio de Coghlan, CABA. Un espacio único para casamientos, cumpleaños de 15, eventos sociales y corporativos.",
+  keywords: [
+    "Estilo Coghlan",
+    "salón de eventos",
+    "salón de fiestas",
+    "Coghlan",
+    "CABA",
+    "casamientos",
+    "cumpleaños de 15",
+    "eventos corporativos",
+    "eventos sociales",
+  ],
 };
 
 export default function RootLayout({
@@ -25,11 +36,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-    <body
-      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-    >
-      {children}
-    </body>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        {children}
+      </body>
     </html>
   );
 }

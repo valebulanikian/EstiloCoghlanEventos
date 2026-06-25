@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 
 export default function WhatsAppButton() {
-  const whatsappNumber = '51941415631';
+  const whatsappNumber = '5491128079523';
   const message = encodeURIComponent('Hola! Me gustaría obtener más información.');
 
   const handleClick = () => {
