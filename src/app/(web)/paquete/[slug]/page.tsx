@@ -23,7 +23,7 @@ export default async function PackageDetailPage({ params }: PageProps) {
       <Navbar />
       <WhatsAppButton />
 
-      <PackageDetail package={pkg} />
+      <PackageDetail />
 
       {/* Contact Section */}
       <section className="py-16 bg-white">
