@@ -14,51 +14,61 @@ const galleryImages = [
     src: '/galeria_01.jpg',
     title: 'Ceremonias al aire libre',
     category: 'Jardín & Civil',
+    type: 'image',
   },
   {
     src: '/galeria_02.jpg',
     title: 'Recepciones elegantes',
     category: 'Celebraciones',
+    type: 'image',
+  },
+  {
+    src: '/video_01.mp4',
+    title: 'Una noche inolvidable',
+    category: 'Fiesta',
+    type: 'video',
   },
   {
     src: '/galeria_03.jpg',
     title: 'Detalles que hacen la diferencia',
     category: 'Ambientación',
+    type: 'image',
   },
   {
     src: '/galeria_04.jpg',
     title: 'Mesas y espacios únicos',
     category: 'Salón',
+    type: 'image',
+  },
+  {
+    src: '/video_02.mp4',
+    title: 'Momentos únicos',
+    category: 'Celebraciones',
+    type: 'video',
   },
   {
     src: '/galeria_05.jpg',
     title: 'Noches inolvidables',
     category: 'Fiesta',
+    type: 'image',
   },
   {
     src: '/galeria_06.jpg',
     title: 'Momentos para recordar',
     category: 'Casamientos',
+    type: 'image',
   },
   {
     src: '/galeria_07.jpg',
     title: 'Celebraciones con estilo',
     category: 'Eventos',
+    type: 'image',
   },
   {
     src: '/galeria_08.jpg',
     title: 'Un oasis en la ciudad',
     category: 'Estilo Coghlan',
-  },
-  {
-    src: '/galeria_09.jpg',
-    title: 'El jardín de tus sueños',
-    category: 'Exterior',
-  },
-  {
-    src: '/galeria_10.jpg',
-    title: 'Cada rincón cuenta una historia',
-    category: 'Experiencias',
+    type: 'image',
   },
 ];
 
@@ -73,10 +83,10 @@ function wrapIndex(i: number, total: number): number {
 function getCardStyle(offset: number, isMobile: boolean) {
   const absOffset = Math.abs(offset);
 
-  const cardW = isMobile ? 240 : 400;
-  const cardH = isMobile ? 180 : 300;
+  const cardW = isMobile ? 280 : 520;
+  const cardH = isMobile ? 210 : 360;
 
-  const xSpacing = isMobile ? 160 : 280;
+  const xSpacing = isMobile ? 190 : 350;
   const zBase = isMobile ? 150 : 250;
   const rotateBase = isMobile ? 40 : 45;
 
@@ -101,7 +111,16 @@ function getCardStyle(offset: number, isMobile: boolean) {
   const opacity = Math.max(1 - absOffset * 0.3, 0);
   const zIndex = 10 - absOffset;
 
-  return { x, z, rotateY, scale, opacity, zIndex, cardW, cardH };
+  return {
+    x,
+    z,
+    rotateY,
+    scale,
+    opacity,
+    zIndex,
+    cardW,
+    cardH,
+  };
 }
 
 export default function GallerySection() {
@@ -113,17 +132,29 @@ export default function GallerySection() {
   const carouselRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const isMobileRef = useRef(false);
+
   const touchStartX = useRef(0);
   const touchDeltaX = useRef(0);
+
+  const mouseStartX = useRef(0);
+  const mouseDragging = useRef(false);
+  const mouseDelta = useRef(0);
+
   const isAnimating = useRef(false);
+  const autoplayTimer = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     const check = () => {
       isMobileRef.current = window.innerWidth < 768;
     };
+
     check();
+
     window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
+
+    return () => {
+      window.removeEventListener('resize', check);
+    };
   }, []);
 
   const layoutCards = useCallback(
@@ -134,6 +165,7 @@ export default function GallerySection() {
         if (!card) return;
 
         let offset = i - activeIndex;
+
         if (offset > TOTAL / 2) offset -= TOTAL;
         if (offset < -TOTAL / 2) offset += TOTAL;
 
@@ -163,6 +195,7 @@ export default function GallerySection() {
 
         if (animate) {
           isAnimating.current = true;
+
           gsap.to(card, {
             ...props,
             duration: 0.6,
@@ -184,10 +217,6 @@ export default function GallerySection() {
   }, [layoutCards]);
 
   useEffect(() => {
-    layoutCards(false);
-  }, [layoutCards]);
-
-  useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from('.gallery-title', {
         y: 40,
@@ -200,32 +229,16 @@ export default function GallerySection() {
           toggleActions: 'play none none none',
         },
       });
-
-      cardsRef.current.forEach((card, i) => {
-        if (!card) return;
-        gsap.from(card, {
-          y: 120,
-          opacity: 0,
-          scale: 0.5,
-          duration: 0.8,
-          delay: i * 0.08,
-          ease: 'back.out(1.2)',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 70%',
-            toggleActions: 'play none none none',
-          },
-        });
-      });
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
-  const autoplayTimer = useRef<ReturnType<typeof setInterval> | null>(null);
-
   const resetAutoplay = useCallback(() => {
-    if (autoplayTimer.current) clearInterval(autoplayTimer.current);
+    if (autoplayTimer.current) {
+      clearInterval(autoplayTimer.current);
+    }
+
     autoplayTimer.current = setInterval(() => {
       setActiveIndex((prev) => wrapIndex(prev + 1, TOTAL));
     }, 4000);
@@ -233,12 +246,19 @@ export default function GallerySection() {
 
   useEffect(() => {
     if (isLightboxOpen) {
-      if (autoplayTimer.current) clearInterval(autoplayTimer.current);
+      if (autoplayTimer.current) {
+        clearInterval(autoplayTimer.current);
+      }
+
       return;
     }
+
     resetAutoplay();
+
     return () => {
-      if (autoplayTimer.current) clearInterval(autoplayTimer.current);
+      if (autoplayTimer.current) {
+        clearInterval(autoplayTimer.current);
+      }
     };
   }, [isLightboxOpen, resetAutoplay]);
 
@@ -264,19 +284,17 @@ export default function GallerySection() {
   }, []);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    touchDeltaX.current = e.touches[0].clientX - touchStartX.current;
+    touchDeltaX.current =
+      e.touches[0].clientX - touchStartX.current;
   }, []);
 
   const handleTouchEnd = useCallback(() => {
     if (Math.abs(touchDeltaX.current) > 50) {
       goTo(touchDeltaX.current < 0 ? 1 : -1);
     }
+
     touchDeltaX.current = 0;
   }, [goTo]);
-
-  const mouseStartX = useRef(0);
-  const mouseDragging = useRef(false);
-  const mouseDelta = useRef(0);
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     mouseDragging.current = true;
@@ -286,39 +304,52 @@ export default function GallerySection() {
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!mouseDragging.current) return;
+
     mouseDelta.current = e.clientX - mouseStartX.current;
   }, []);
 
   const handleMouseUp = useCallback(() => {
     if (!mouseDragging.current) return;
+
     mouseDragging.current = false;
+
     if (Math.abs(mouseDelta.current) > 50) {
       goTo(mouseDelta.current < 0 ? 1 : -1);
     }
+
     mouseDelta.current = 0;
   }, [goTo]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (isLightboxOpen) return;
+
       const section = sectionRef.current;
+
       if (!section) return;
 
       const rect = section.getBoundingClientRect();
-      const inView = rect.top < window.innerHeight && rect.bottom > 0;
+      const inView =
+        rect.top < window.innerHeight && rect.bottom > 0;
+
       if (!inView) return;
 
       if (e.key === 'ArrowLeft') {
         e.preventDefault();
         goTo(-1);
-      } else if (e.key === 'ArrowRight') {
+      }
+
+      if (e.key === 'ArrowRight') {
         e.preventDefault();
         goTo(1);
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, [goTo, isLightboxOpen]);
 
   const handleCardClick = useCallback(
@@ -335,29 +366,52 @@ export default function GallerySection() {
     [activeIndex, goToIndex]
   );
 
-  const closeLightbox = () => setIsLightboxOpen(false);
+  const closeLightbox = () => {
+    setIsLightboxOpen(false);
+  };
 
   const goToNext = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % TOTAL);
   }, []);
 
   const goToPrevious = useCallback(() => {
-    setCurrentIndex((prev) => (prev === 0 ? TOTAL - 1 : prev - 1));
+    setCurrentIndex((prev) =>
+      prev === 0 ? TOTAL - 1 : prev - 1
+    );
   }, []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isLightboxOpen) return;
-      if (e.key === 'Escape') setIsLightboxOpen(false);
-      else if (e.key === 'ArrowLeft') goToPrevious();
-      else if (e.key === 'ArrowRight') goToNext();
+
+      if (e.key === 'Escape') {
+        setIsLightboxOpen(false);
+      }
+
+      if (e.key === 'ArrowLeft') {
+        goToPrevious();
+      }
+
+      if (e.key === 'ArrowRight') {
+        goToNext();
+      }
     };
+
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, [isLightboxOpen, goToPrevious, goToNext]);
 
   useEffect(() => {
-    document.body.style.overflow = isLightboxOpen ? 'hidden' : 'unset';
+    document.body.style.overflow = isLightboxOpen
+      ? 'hidden'
+      : 'unset';
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
   }, [isLightboxOpen]);
 
   return (
@@ -377,14 +431,15 @@ export default function GallerySection() {
         </h2>
 
         <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-          Un recorrido por celebraciones, ceremonias y momentos inolvidables en
-          nuestro salón y jardín, en el corazón de Coghlan.
+          Un recorrido por celebraciones, ceremonias y momentos
+          inolvidables en nuestro salón y jardín, en el corazón de
+          Coghlan.
         </p>
       </div>
 
-      {/* 3D Coverflow Carousel */}
+      {/* Carousel */}
       <div className="relative">
-        {/* Navigation arrows */}
+        {/* Flecha izquierda */}
         <button
           onClick={() => goTo(-1)}
           className="hidden md:flex absolute left-4 lg:left-12 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/90 shadow-lg hover:shadow-xl hover:bg-white transition-all border border-[#d8d0c2]"
@@ -393,6 +448,7 @@ export default function GallerySection() {
           <ChevronLeft className="w-6 h-6 text-[#728d69]" />
         </button>
 
+        {/* Flecha derecha */}
         <button
           onClick={() => goTo(1)}
           className="hidden md:flex absolute right-4 lg:right-12 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/90 shadow-lg hover:shadow-xl hover:bg-white transition-all border border-[#d8d0c2]"
@@ -404,7 +460,7 @@ export default function GallerySection() {
         {/* Carousel container */}
         <div
           ref={carouselRef}
-          className="relative mx-auto h-[280px] md:h-[420px] select-none cursor-grab active:cursor-grabbing"
+          className="relative mx-auto h-[320px] md:h-[500px] select-none cursor-grab active:cursor-grabbing"
           style={{ perspective: '1000px' }}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
@@ -416,7 +472,7 @@ export default function GallerySection() {
         >
           {galleryImages.map((image, index) => (
             <div
-              key={index}
+              key={`${image.src}-${index}`}
               ref={(el) => {
                 cardsRef.current[index] = el;
               }}
@@ -425,8 +481,8 @@ export default function GallerySection() {
               style={{
                 transformStyle: 'preserve-3d',
                 willChange: 'transform, opacity',
-                width: isMobileRef.current ? 240 : 400,
-                height: isMobileRef.current ? 180 : 300,
+                width: isMobileRef.current ? 280 : 520,
+                height: isMobileRef.current ? 210 : 360,
               }}
             >
               <div
@@ -436,28 +492,51 @@ export default function GallerySection() {
                     : ''
                 }`}
               >
-                <Image
-                  src={image.src}
-                  alt={image.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 240px, 400px"
-                />
+                {image.type === 'video' ? (
+                  <video
+                    src={image.src}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                  />
+                ) : (
+                  <Image
+                    src={image.src}
+                    alt={image.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 280px, 520px"
+                  />
+                )}
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent pointer-events-none" />
 
                 <div
                   className={`absolute bottom-0 left-0 right-0 p-4 md:p-5 transition-opacity duration-300 ${
-                    index === activeIndex ? 'opacity-100' : 'opacity-70'
+                    index === activeIndex
+                      ? 'opacity-100'
+                      : 'opacity-70'
                   }`}
                 >
                   <p className="text-white text-base md:text-lg font-semibold">
                     {image.title}
                   </p>
+
                   <p className="text-white/80 text-xs md:text-sm tracking-wide mt-1">
                     {image.category}
                   </p>
                 </div>
+
+                {image.type === 'video' && (
+                  <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm rounded-full px-3 py-1.5 pointer-events-none">
+                    <span className="text-white text-xs font-medium">
+                      ▶ Video
+                    </span>
+                  </div>
+                )}
 
                 {index === activeIndex && (
                   <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent pointer-events-none" />
@@ -469,12 +548,14 @@ export default function GallerySection() {
       </div>
 
       {/* Dots */}
-      <div className="flex justify-center gap-2 mt-6">
-        {galleryImages.map((_, i) => (
+      <div className="flex justify-center gap-2 mt-6 flex-wrap px-4">
+        {galleryImages.map((image, i) => (
           <button
             key={i}
             onClick={() => goToIndex(i)}
-            aria-label={`Ir a foto ${i + 1}`}
+            aria-label={`Ir a ${
+              image.type === 'video' ? 'video' : 'foto'
+            } ${i + 1}`}
             className={`rounded-full transition-all duration-300 ${
               i === activeIndex
                 ? 'w-8 h-2.5 bg-[#728d69]'
@@ -485,7 +566,7 @@ export default function GallerySection() {
       </div>
 
       <p className="text-center text-gray-400 text-xs mt-4 md:hidden">
-        Deslizá para ver más fotos
+        Deslizá para ver más fotos y videos
       </p>
 
       {/* Lightbox */}
@@ -498,6 +579,7 @@ export default function GallerySection() {
             className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
             onClick={closeLightbox}
           >
+            {/* Cerrar */}
             <button
               onClick={closeLightbox}
               className="absolute top-4 right-4 z-50 text-white hover:text-[#d6c3a1] transition-colors p-2"
@@ -506,6 +588,7 @@ export default function GallerySection() {
               <X className="w-8 h-8" />
             </button>
 
+            {/* Anterior */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -517,6 +600,7 @@ export default function GallerySection() {
               <ChevronLeft className="w-10 h-10" />
             </button>
 
+            {/* Siguiente */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -538,19 +622,34 @@ export default function GallerySection() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
                 transition={{ duration: 0.3 }}
-                className="relative w-full h-full max-w-6xl max-h-[90vh]"
+                className="relative w-full h-full max-w-6xl max-h-[90vh] flex items-center justify-center"
               >
-                <Image
-                  src={galleryImages[currentIndex].src}
-                  alt={galleryImages[currentIndex].title}
-                  fill
-                  className="object-contain"
-                  sizes="100vw"
-                  priority
-                />
+                {galleryImages[currentIndex].type === 'video' ? (
+                  <video
+                    src={galleryImages[currentIndex].src}
+                    className="max-w-full max-h-[85vh] object-contain rounded-xl"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    controls
+                  />
+                ) : (
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={galleryImages[currentIndex].src}
+                      alt={galleryImages[currentIndex].title}
+                      fill
+                      className="object-contain"
+                      sizes="100vw"
+                      priority
+                    />
+                  </div>
+                )}
               </motion.div>
             </div>
 
+            {/* Información */}
             <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center z-50">
               <motion.div
                 key={currentIndex}
@@ -561,9 +660,11 @@ export default function GallerySection() {
                 <span className="text-[#d6c3a1] text-sm font-medium block mb-1">
                   {galleryImages[currentIndex].category}
                 </span>
+
                 <p className="text-white text-lg font-semibold">
                   {galleryImages[currentIndex].title}
                 </p>
+
                 <p className="text-white/70 text-sm mt-1">
                   {currentIndex + 1} / {galleryImages.length}
                 </p>

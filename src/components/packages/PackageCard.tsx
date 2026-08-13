@@ -1,3 +1,4 @@
+
 'use client';
 
 import { motion } from 'framer-motion';
@@ -28,10 +29,9 @@ const services = [
     description:
       'DJ, sonido profesional, pista LED y show de luces.',
     icon: Music2,
-    image:
-      '/images/musica.jpg',
+    image: '/images/musica.jpg',
     items: [
-      'DJ profesional residente',
+      'DJ profesional',
       'Pista LED',
       'Show de luces',
       'Sonido profesional',
@@ -42,8 +42,7 @@ const services = [
     description:
       'Ceremonias al aire libre y ambientaciones elegantes para momentos inolvidables.',
     icon: Flower2,
-    image:
-      '/images/ambientacion.jpg',
+    image: '/images/ambientacion.jpg',
     items: [
       'Ceremonias al aire libre',
       'Jardín de 1200m²',
@@ -57,8 +56,7 @@ const services = [
     description:
       'Instalaciones totalmente equipadas para garantizar confort y excelencia.',
     icon: Sparkles,
-    image:
-      '/images/servicios.jpg',
+    image: '/images/servicios.jpg',
     items: [
       'Aire acondicionado',
       'Calefacción central',
@@ -70,11 +68,11 @@ const services = [
 
 export default function PackageCard() {
   return (
-    <section className="py-24 bg-white">
+    <section className="py-24 bg-white font-serif">
       <div className="max-w-7xl mx-auto px-6">
 
         <div className="text-center mb-20">
-          <p className="uppercase tracking-[0.3em] text-yellow-700 text-sm mb-4">
+          <p className="uppercase tracking-[0.3em] text-yellow-700 text-sm mb-4 font-sans">
             Estilo Coghlan
           </p>
 
@@ -105,7 +103,7 @@ export default function PackageCard() {
                 <div
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
                   style={{
-                    backgroundImage: `url(${service.image})`,
+                    backgroundImage: 'url(' + service.image + ')',
                   }}
                 />
 
@@ -134,7 +132,6 @@ export default function PackageCard() {
                         className="flex items-start space-x-3 text-white/90"
                       >
                         <div className="w-2 h-2 rounded-full bg-yellow-400 mt-2" />
-
                         <span>{item}</span>
                       </li>
                     ))}
@@ -145,7 +142,9 @@ export default function PackageCard() {
             );
           })}
         </div>
+
       </div>
     </section>
   );
 }
+

@@ -43,35 +43,35 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6">
-        <div className="flex justify-between items-center h-28">
 
-          {/* Marca */}
-          <Link href="/" className="group flex flex-col">
-            <span
-              className="text-3xl md:text-4xl text-[#5b6d55] transition-all duration-300 group-hover:text-[#728d69]"
-              style={{
-                fontFamily: '"Cormorant Garamond", serif',
-                fontStyle: 'italic',
-                lineHeight: 1,
-              }}
-            >
-              Estilo Coghlan
-            </span>
+        <div className="flex justify-between items-center h-32">
 
-            <div className="w-16 h-[2px] bg-[#728d69] mt-2 mb-1 transition-all duration-300 group-hover:w-24" />
+      {/* Logo */}
+      <Link href="/" className="group flex flex-col">
+        <span
+          className="text-4xl md:text-5xl text-[#3f503b] transition-all duration-300 group-hover:text-[#5b6d55]"
+          style={{
+            fontFamily: '"Cormorant Garamond", serif',
+            fontStyle: 'italic',
+            lineHeight: 1,
+          }}
+        >
+          Estilo Coghlan
+        </span>
+            <div className="w-20 h-[2px] bg-[#728d69] mt-2 mb-2 transition-all duration-300 group-hover:w-28" />
 
-            <span className="text-[11px] uppercase tracking-[0.35em] text-gray-500">
+            <span className="text-xs uppercase tracking-[0.35em] text-gray-500">
               Salón de Eventos
             </span>
           </Link>
 
           {/* Desktop */}
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-10">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
-                className="text-gray-700 hover:text-[#5b6d55] transition-all duration-300 hover:-translate-y-0.5 font-medium tracking-wide"
+                className="text-[15px] font-medium tracking-wide text-gray-700 hover:text-[#728d69] transition-all duration-300 hover:-translate-y-0.5"
               >
                 {link.name}
               </Link>
@@ -90,6 +90,7 @@ export default function Navbar() {
               <Menu className="w-7 h-7 text-[#5b6d55]" />
             )}
           </button>
+
         </div>
       </div>
 

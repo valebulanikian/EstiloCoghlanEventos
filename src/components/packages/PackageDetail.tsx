@@ -20,7 +20,7 @@ const services = [
     description:
       'Tecnología y ambientación para crear una experiencia inolvidable.',
     items: [
-      'Disc Jockey residente',
+      'DJ',
       'Show de luces',
       'Pista LED',
       'Pantallas gigantes',
@@ -46,7 +46,6 @@ const services = [
     items: [
       'Aire acondicionado',
       'Calefacción central',
-      'Grupo electrógeno',
       'Cochera privada',
       'Suite privada',
     ],

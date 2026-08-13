@@ -26,12 +26,6 @@ export default function Home() {
       <section id="servicios" className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900">
-              Nuestros Servicios
-            </h2>
-            <p className="text-gray-600 mt-4">
-              Todo lo que ofrecemos para tu evento
-            </p>
           </div>
 
           {/* ❗ IMPORTANTE: NO MAP, porque PackageCard no recibe props */}
