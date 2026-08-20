@@ -70,6 +70,24 @@ const galleryImages = [
     category: 'Estilo Coghlan',
     type: 'image',
   },
+  {
+  src: '/comida_01.jpg',
+  title: 'Gastronomía',
+  category: 'Catering',
+  type: 'image',
+},
+{
+  src: '/comida_02.jpg',
+  title: 'Propuesta gastronómica',
+  category: 'Catering',
+  type: 'image',
+},
+{
+  src: '/comida_03.jpg',
+  title: 'Detalles gastronómicos',
+  category: 'Catering',
+  type: 'image',
+},
 ];
 
 const TOTAL = galleryImages.length;
@@ -512,24 +530,6 @@ export default function GallerySection() {
                   />
                 )}
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent pointer-events-none" />
-
-                <div
-                  className={`absolute bottom-0 left-0 right-0 p-4 md:p-5 transition-opacity duration-300 ${
-                    index === activeIndex
-                      ? 'opacity-100'
-                      : 'opacity-70'
-                  }`}
-                >
-                  <p className="text-white text-base md:text-lg font-semibold">
-                    {image.title}
-                  </p>
-
-                  <p className="text-white/80 text-xs md:text-sm tracking-wide mt-1">
-                    {image.category}
-                  </p>
-                </div>
-
                 {image.type === 'video' && (
                   <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm rounded-full px-3 py-1.5 pointer-events-none">
                     <span className="text-white text-xs font-medium">
@@ -646,28 +646,6 @@ export default function GallerySection() {
                     />
                   </div>
                 )}
-              </motion.div>
-            </div>
-
-            {/* Información */}
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center z-50">
-              <motion.div
-                key={currentIndex}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="bg-black/70 backdrop-blur-sm px-6 py-3 rounded-2xl border border-white/10"
-              >
-                <span className="text-[#d6c3a1] text-sm font-medium block mb-1">
-                  {galleryImages[currentIndex].category}
-                </span>
-
-                <p className="text-white text-lg font-semibold">
-                  {galleryImages[currentIndex].title}
-                </p>
-
-                <p className="text-white/70 text-sm mt-1">
-                  {currentIndex + 1} / {galleryImages.length}
-                </p>
               </motion.div>
             </div>
           </motion.div>
